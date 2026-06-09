@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { defaultInput, simulate, type SimulationInput } from '../lib/furusato';
 import SimulationForm from '../components/SimulationForm';
 import ResultCard from '../components/ResultCard';
+import PrintReport from '../components/PrintReport';
 import { saveSimulation } from '../firebase/simulations';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -58,8 +59,18 @@ export default function SimulatorPage() {
     setErrorMsg('');
   };
 
+  const onPrint = () => {
+    if (!customerName.trim()) {
+      setErrorMsg('印刷前に顧客名を入力してください。');
+      return;
+    }
+    setErrorMsg('');
+    window.print();
+  };
+
   return (
-    <div className="grid" style={{ gridTemplateColumns: '1.3fr 1fr', alignItems: 'start' }}>
+    <>
+      <div className="grid no-print" style={{ gridTemplateColumns: '1.3fr 1fr', alignItems: 'start' }}>
       <div>
         <SimulationForm input={input} onChange={setInput} />
       </div>
@@ -111,6 +122,9 @@ export default function SimulatorPage() {
             <button className="btn" onClick={onSave} disabled={saving}>
               {saving ? '保存中…' : '履歴に保存'}
             </button>
+            <button className="btn btn-secondary" onClick={onPrint}>
+              報告書を印刷
+            </button>
             <button className="btn btn-secondary" onClick={onReset}>
               入力をリセット
             </button>
@@ -123,6 +137,17 @@ export default function SimulatorPage() {
           </p>
         </div>
       </div>
-    </div>
+      </div>
+
+      {/* 印刷時のみ表示される報告書 */}
+      <PrintReport
+        customerName={customerName}
+        memo={memo}
+        targetYear={targetYear}
+        staffName={user?.email && !user.isAnonymous ? user.email : ''}
+        input={input}
+        result={result}
+      />
+    </>
   );
 }

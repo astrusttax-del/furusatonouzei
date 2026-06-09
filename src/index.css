@@ -382,3 +382,153 @@ select:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- 印刷用 報告書 ---------- */
+/* 画面では非表示。印刷時のみ表示する。 */
+.print-report {
+  display: none;
+}
+
+.print-report .pr-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid #0b6b5e;
+  padding-bottom: 10px;
+  margin-bottom: 18px;
+}
+.print-report .pr-title h1 {
+  font-size: 19px;
+  margin: 0;
+  color: #0b3f37;
+}
+.print-report .pr-sub {
+  font-size: 11px;
+  color: #555;
+  margin: 3px 0 0;
+}
+.print-report .pr-issue {
+  font-size: 11px;
+  color: #333;
+  text-align: right;
+  line-height: 1.7;
+}
+
+.print-report table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.print-report .pr-meta {
+  margin-bottom: 16px;
+}
+.print-report .pr-meta th,
+.print-report .pr-meta td {
+  border: 1px solid #bbb;
+  padding: 7px 10px;
+  font-size: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+.print-report .pr-meta th {
+  background: #f0f4f3;
+  width: 90px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.print-report .pr-customer {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.print-report .pr-result {
+  border: 2px solid #0b6b5e;
+  background: #eef6f3;
+  border-radius: 6px;
+  padding: 14px 18px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.print-report .pr-result-label {
+  font-size: 12px;
+  color: #0b3f37;
+  margin-bottom: 4px;
+}
+.print-report .pr-result-amount {
+  font-size: 30px;
+  font-weight: 800;
+  color: #0b6b5e;
+  letter-spacing: 0.02em;
+}
+
+.print-report .pr-section {
+  font-size: 13px;
+  color: #0b3f37;
+  border-left: 4px solid #0b6b5e;
+  padding-left: 8px;
+  margin: 18px 0 8px;
+}
+.print-report .pr-table th,
+.print-report .pr-table td {
+  border: 1px solid #bbb;
+  padding: 6px 10px;
+  font-size: 12px;
+  text-align: left;
+}
+.print-report .pr-table th {
+  background: #f6f8f8;
+  font-weight: 600;
+  width: 24%;
+  white-space: nowrap;
+}
+.print-report .pr-breakdown td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.print-report .pr-notes {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+.print-report .pr-notes li {
+  font-size: 10.5px;
+  color: #444;
+  line-height: 1.7;
+  margin-bottom: 2px;
+}
+
+.print-report .pr-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 8px;
+  border-top: 1px solid #ccc;
+  font-size: 10.5px;
+  color: #666;
+}
+.print-report .pr-company {
+  font-weight: 600;
+}
+
+@media print {
+  /* 画面用UIを隠し、報告書だけを印刷する */
+  .app-header,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  .container {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .print-report {
+    display: block;
+    color: #1a1a1a;
+  }
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+}
