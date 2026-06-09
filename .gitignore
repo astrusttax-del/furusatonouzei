@@ -1,0 +1,30 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# build
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+
+# Claude Code のローカル個人設定
+.claude/settings.local.json
+
+# env (Firebase の API キー等。コミットしない)
+.env
+.env.*
+!.env.example
+
+# firebase
+.firebase
+firebase-debug.log
+firestore-debug.log
+
+# editor / OS
+.DS_Store
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea
