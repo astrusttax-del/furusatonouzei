@@ -78,6 +78,38 @@ export interface SimulationInput {
   housingLoanCredit: number;
 }
 
+/** 所得控除の内訳（所得税・住民税それぞれで額が異なる項目を保持） */
+export interface DeductionComponents {
+  /** 基礎控除 */
+  basic: number;
+  /** 社会保険料控除 */
+  socialInsurance: number;
+  /** 配偶者控除（配偶者特別控除を含む） */
+  spouse: number;
+  /** 扶養控除 */
+  dependent: number;
+  /** 生命保険料控除 */
+  lifeInsurance: number;
+  /** 地震保険料控除 */
+  earthquakeInsurance: number;
+  /** 小規模企業共済等掛金控除（iDeCo等） */
+  smallEnterpriseMutualAid: number;
+  /** 医療費控除 */
+  medical: number;
+  /** その他の所得控除 */
+  other: number;
+}
+
+/** 計算過程の再構成に使う内訳 */
+export interface SimulationBreakdown {
+  /** 所得税側の所得控除内訳 */
+  incomeTax: DeductionComponents;
+  /** 住民税側の所得控除内訳 */
+  residentTax: DeductionComponents;
+  /** 住民税の調整控除 */
+  adjustmentCredit: number;
+}
+
 /** シミュレーション結果 */
 export interface SimulationResult {
   /** 給与所得（給与収入 − 給与所得控除） */
@@ -104,6 +136,9 @@ export interface SimulationResult {
 
   /** ふるさと納税 控除上限額（円, 100円未満切捨て） */
   donationLimit: number;
+
+  /** 所得控除の内訳（計算過程の表示用） */
+  breakdown: SimulationBreakdown;
 
   /** 警告メッセージ（住宅ローン控除併用時など） */
   warnings: string[];
@@ -314,6 +349,31 @@ export function simulate(input: SimulationInput): SimulationResult {
     warnings.push('配偶者特別控除は概算値です。配偶者の所得・本人の所得帯により実額と差が出る場合があります。');
   }
 
+  // 計算過程表示用の内訳（共通控除は所得税・住民税で同額）
+  const commonComponents = {
+    socialInsurance: socialInsuranceUsed,
+    lifeInsurance: nonNegative(input.lifeInsuranceDeduction),
+    earthquakeInsurance: nonNegative(input.earthquakeInsuranceDeduction),
+    smallEnterpriseMutualAid: nonNegative(input.smallEnterpriseMutualAid),
+    medical: nonNegative(input.medicalDeduction),
+    other: nonNegative(input.otherDeduction),
+  };
+  const breakdown: SimulationBreakdown = {
+    incomeTax: {
+      basic: basicIncome,
+      spouse: spouseIncomeDed,
+      dependent: dependentIncomeDed,
+      ...commonComponents,
+    },
+    residentTax: {
+      basic: basicResident,
+      spouse: spouseResidentDed,
+      dependent: dependentResidentDed,
+      ...commonComponents,
+    },
+    adjustmentCredit,
+  };
+
   return {
     employmentIncome,
     employmentIncomeDeduction: empDeduction,
@@ -325,6 +385,7 @@ export function simulate(input: SimulationInput): SimulationResult {
     incomeTaxRate,
     residentTaxIncomeLevy,
     donationLimit,
+    breakdown,
     warnings,
   };
 }

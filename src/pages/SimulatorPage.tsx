@@ -76,7 +76,7 @@ export default function SimulatorPage() {
       </div>
 
       <div>
-        <ResultCard result={result} />
+        <ResultCard input={input} result={result} />
 
         <div className="card">
           <h2>顧客情報・保存</h2>

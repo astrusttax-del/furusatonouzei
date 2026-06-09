@@ -275,6 +275,77 @@ select:focus {
   border-bottom: none;
 }
 
+/* クリックで展開する内訳行 */
+.breakdown .expandable-row {
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.breakdown .expandable-row:hover td {
+  background: var(--primary-light);
+}
+.breakdown .expandable-row.open td {
+  background: var(--primary-light);
+  border-bottom: none;
+  font-weight: 700;
+}
+.breakdown .expandable-row:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+.breakdown .caret {
+  display: inline-block;
+  font-size: 9px;
+  color: var(--primary);
+  margin-right: 8px;
+  transition: transform 0.15s;
+}
+.breakdown .caret.open {
+  transform: rotate(90deg);
+}
+.breakdown .steps-row td {
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+  background: #f8fbfa;
+}
+.steps {
+  padding: 12px 14px 14px 30px;
+}
+.step-line {
+  font-size: 12.5px;
+  color: #2a3a44;
+  line-height: 1.9;
+  font-variant-numeric: tabular-nums;
+}
+.step-line::before {
+  content: '';
+}
+
+/* ヒーロー内の計算過程 */
+.hero-explain {
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.hero-explain:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+.hero-steps {
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.hero-steps .step-line {
+  color: #eafaf5;
+  font-size: 12px;
+  line-height: 1.85;
+}
+
 .warning {
   background: #fff8ec;
   border: 1px solid #f4dca6;
